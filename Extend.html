@@ -1,0 +1,36 @@
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title> ... </title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+</head>
+
+<body>
+<div id="first">
+ <text> some text </text>
+</div>
+</body>
+
+<script>
+(function( $ ){
+
+  $.fn.tooltip = function( options ) {  
+
+    // Create some defaults, extending them with any options that were provided
+    var settings = $.extend( {
+      'location'         : 'top',
+      'background-color' : 'blue'
+    }, options);
+
+    return this.each(function() {        
+
+      // Tooltip plugin code here
+
+    });
+
+  };
+})( jQuery );
+$('div').tooltip({
+  'location' : 'left'
+});
+</script>

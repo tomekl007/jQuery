@@ -1,0 +1,101 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+<style>
+ul.tabs {list-style-type:none; margin:5px 0 0 0; padding:0; clear:both; padding-bottom:10px; overflow:hidden;}
+			ul.tabs li {height:31px; float:left; text-align:center; line-height:31px; background:#ccc; margin-right:1px; position:relative; min-width:110px; cursor:pointer; padding:0 10px;}
+			ul.tabs li a {font-size:12px; text-decoration:none; color:#333; outline:none;}
+			ul.tabs li:hover {background:#efefef;}
+			ul.tabs li.active {background:green; cursor:default;}
+			ul.tabs li.active a {color:#fff; cursor:default;}
+			ul.tabs li.disable {background:#c0c0c0; cursor:default;}
+			ul.tabs li.disable a {color:#999; cursor:default;}
+			#tabs li {
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+		/* lista tabow */
+			ul.tabs-decorated {list-style-type:none; margin:5px 0 0 0; padding:0; clear:both; padding-bottom:10px; overflow:hidden;}
+			ul.tabs-decorated li {height:31px; float:left; text-align:center; line-height:31px; background:url(tab_all.gif) 0 0 no-repeat; margin-right:1px; position:relative; min-width:110px; cursor:pointer; padding:0 10px;}
+			ul.tabs-decorated li span.right {position:absolute; right:0; top:0; width:9px; height:31px; background:url(tab_all.gif) 0 -31px no-repeat; overflow:hidden;}
+			ul.tabs-decorated li a {font-size:12px; text-decoration:none; color:#333; outline:none;}
+			ul.tabs-decorated li:hover {background:url(tab_all.gif) 0 -62px no-repeat;}
+			ul.tabs-decorated li:hover a {color:#fff}
+			ul.tabs-decorated li:hover span.right {background:url(tab_all.gif) 0 -93px no-repeat; width:9px; height:31px;}
+			ul.tabs-decorated li.active {background:url(tab_all.gif) 0 -186px no-repeat; cursor:default;}
+			ul.tabs-decorated li.active a {color:#fff; cursor:default;}
+			ul.tabs-decorated li.active span.right {position:absolute; right:0; top:0; width:9px; height:31px; background:url(tab_all.gif) 0 -217px no-repeat; overflow:hidden;}	
+			ul.tabs-decorated li.disable {background:url(tab_all.gif) 0 -124px no-repeat; cursor:default;}
+			ul.tabs-decorated li.disable span.right {position:absolute; right:0; top:0; width:9px; height:31px; background:url(tab_all.gif) 0 -155px no-repeat; overflow:hidden;}	
+			ul.tabs-decorated li.disable a {color:#999; cursor:default;}		
+		/* powierzchnia tabow */
+			.tab {display:block; border:1px solid #c0c0c0; background:#F8F8F8; min-height:50px; clear:both; padding:10px; margin-top:-5px;}
+			.tab-decorated {display:block; border:1px solid #c0c0c0; border-bottom-width:3px; background:#F8F8F8; min-height:50px; clear:both; padding:10px; margin-top:-5px; -moz-border-radius:8px; -webkit-border-radius:8px;}th; padding:10px; margin-top:-5px; -moz-border-radius:8px; -webkit-border-radius:8px;}
+</style>
+
+<p>
+
+		<ul class="tabs">
+		<li class="active"><a href="#tab-1">Zak³adka 1</a></li>
+		               <li><a href="#tab-2">Zak³adka 2</a></li>
+		               <li class="disable"><a href="#tab-3">Zak³adka 3</a></li>
+		</ul>
+		<div id="tab-1" class="tab">
+		...Treœæ pierwszej zak³adki
+		</div>
+		<div id="tab-2" class="tab">
+		...Treœæ drugiej zak³adki
+		</div>
+		<div id="tab-3" class="tab">
+		...Treœæ trzeciej zak³adki
+		</div>
+</p>
+
+<script>
+		$(document).ready(function() {
+			//dla ka¿dego miejsca z tabami
+			$('.tabs').each(function() {			
+				var $ul = $(this);
+				var $li = $ul.children('li');									
+				//przy wejsciu na strone ukrywamy tresc tabow...
+				$li.each(function() {
+					var $trescTaba = $($(this).children('a').attr('href'));
+					if ($(this).hasClass('active')) {
+						$trescTaba.show();
+					} else {
+						$trescTaba.hide();
+					}
+					$(this).append('<span class="right"></span>');
+				});
+			
+/*Nasze taby maj¹ ju¿ podstawow¹ funkcjonalnoœæ. Postaramy siê teraz je 
+nieco upiêkszyæ i wzbogaciæ ich funkcjonalnoœæ. Na pocz¹tek dodajmy
+ obs³ugê nie aktywnych tabów. Wystarczy, ¿e linkom-tamob, które maj¹
+ byæ nieaktywne dodamy dodatkow¹ klasê disable (lub jeszcze lepiej ustawimy 
+ im atrybut "disabled"), a nastêpnie dokonamy odpowiedniego sprawdzenia:*/			
+				
+				
+				//ma³y trik - gdy klikamy na li tab, wtedy wykonujemy zdarzenie dla linka,
+				//który siê w nim znajduje (dzieki temu mo¿emy klikn¹æ na ca³y tab, 
+                //a nie tylko na linka)
+				$li.click(function() {$(this).children('a').click()});
+				//po klikniêciu na link...
+				$li.children('a').click(function() {
+					if (!$(this).parent().hasClass('disable')) {
+						//usuwamy z tabów klasê active
+						$li.removeClass('active');										
+						//ukrywamy wszystkie taby					
+						$li.each(function() {
+							$($(this).children('a').attr('href')).hide();
+						});										
+						//ustawiamy klikniêtemu tabowi klasê aktywn¹
+						$(this).parent().addClass('active');
+						$($(this).attr('href')).show();
+					} else {
+						$(this).blur();
+					}
+					//nie chcemy wykonaæ domyœlnej akcji dla linka
+					return false;
+				});
+			});		
+		});
+	</script>

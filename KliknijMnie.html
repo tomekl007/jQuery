@@ -1,0 +1,16 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+<style>
+		div#pierwszy {width:100px; height:100px; background:#d0e8ff; border:2px solid #0569af; color:#0569af; font:bold 12px Tahoma; text-align:center; line-height:100px}
+		
+</style>
+
+<div id="pierwszy">Kliknij mnie</div>
+
+<script>
+//Pobieramy obiekt #pierwszy, po czym wykonujemy na nim kilka operacji:
+//Ustawiamy mu kolor na czerwony
+//Ukrywamy go (wolno)
+//Po czym z wolna pokazujemy (3 sekundy)
+$('#pierwszy').css('color','red').hide('slow').show(3000);
+</script>

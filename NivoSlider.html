@@ -1,0 +1,64 @@
+<script src="jquery-1.8.1.js"></script>
+<script src="nivo-slider/jquery.nivo.slider.pack.js"></script>
+
+
+	<style>
+		#slider img {position:absolute; top:0px; left:0px; display:none;}
+		#slider {width:480px;}
+		.nivo-directionNav a {display:block; width:30px; height:30px; background:url(arrows.png) no-repeat; text-indent:-9999px; border:0;}
+		a.nivo-nextNav {background-position:-30px 0; right:15px;}
+		a.nivo-prevNav {left:15px;}
+		strong {color:#DBD834;}
+		.nivo-caption {font-size:11px;}
+		.nivo-controlNav a {display:none;}
+		.lista {list-style-type:none; margin:20px 0; padding:0;}
+		.lista li {margin:4px; float:left; width:150px; cursor:pointer; height:30px; font-size:10px; background:#678CB1; color:#fff; text-align:center; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; line-height:30px;}
+		.lista li.active {background:#86AAD1; text-decoration:underline;}
+		.lista li.first {width:100px; background:#6C9048;}
+		.lista li.first_active {background:#93C763; text-decoration:underline;}
+		.lista li.last {background:#980A0A; width:70px;}
+		.lista li.last_active {background:#E02727; text-decoration:underline;}
+
+	</style>
+	<script>
+		$(window).load(function() {
+			$('#slider').nivoSlider({
+				directionNav:false, //nie chcemy strza³ek
+				directionNavHide:false, //nie chcemy strza³ek po najechaniu
+				controlNav:true //renderjemy 1,2,3
+			});
+			var $lista = $('.lista'); //pobieramy nasz¹ listê
+			var $li = $lista.find('li') //pobieramy li naszej listy
+			$li.bind({
+				'click' : function() {
+					var index = $li.index($(this));
+					$('.nivo-controlNav a').eq(index).click();
+					$li.removeClass('active'); //usuwamy klasê z wszystkich tekstów
+					$(this).addClass('active'); //nadajemy klasê tylko klikniêtemu
+				}
+			}).eq(0).addClass('active'); //pierwszemu LI dajemy klasê active
+		});
+	</script>
+	
+	
+	<p>
+		<div id="slider">
+			<a href=""><img src="slide_1.jpg" width="480" height="300" alt="Obrazek numer 1" /></a>
+			<a href=""><img src="slide_2.jpg" width="480" height="300" alt="Obrazek numer 2" title="To jest tekstowy opis obrazka 2"  /></a>
+			<a href=""><img src="slide_3.jpg" width="480" height="300" alt="Obrazek numer 3" title="#opisSlide2"  /></a>
+			<a href=""><img src="slide_4.jpg" width="480" height="300" alt="Obrazek numer 4" title="#opisSlide3"  /></a>
+		</div>
+		<div id="opisSlide2" class="nivo-html-caption">
+    		To jest przyk³adowy <strong>html opis dla obrazka 3</strong>
+		</div>
+		<div id="opisSlide3" class="nivo-html-caption">
+    		To jest inny <strong>opis dla obrazka 4</strong>
+		</div>
+	
+		<ul class="lista">
+			<li>To jest pierwszy tekst prze³¹czaj¹cy</li>
+			<li>To jest drugi tekst prze³¹czaj¹cy</li>
+			<li>To jest trzeci tekst prze³¹czaj¹cy</li>
+			<li>To jest trzeci tekst prze³¹czaj¹cy</li>
+		</ul>
+	</p>

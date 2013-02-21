@@ -1,0 +1,108 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<style>
+        .slider {width:480px; margin-bottom:20px; clear:both; overflow:hidden;}
+        .slider_preview {margin-bottom:20px; overflow:hidden;}
+        .slider_preview .wrapper {border:1px dotted #666 !important;}
+        
+        .prev, .next {width:20px; height:100px; float:left; margin:15px 5px 0 5px; border:1px solid #ccc; background:#fff; -moz-border-radius:2px; -webkit-border-radius:2px; border-radius:2px; font:11px Arial; color:#333;}
+        .wrapper {width:402px; min-height:127px; position:relative; background:#333; overflow:hidden; float:left;}
+                .lista {position:absolute; width:10000px; margin:0; padding:0; list-style-type:none; clear:both; overflow:hidden;}
+                .lista li {float:left; width:130px; min-height:100px; background:#ca2027; margin:2px; -moz-border-radius:4px; -webkit-border-radius:4px; border-radius:4px;}
+                .lista li h3 {font:bold 12px Arial; color:#fff; margin:0 0 10px 0; padding:5px;}
+                .lista li div {font:10px Arial; color:#eee; padding:5px;}            
+</style>
+
+     <p>
+    <div class="slider">
+        <input type="button" value="&lt;" class="prev" />
+        <div class="wrapper">
+            <ul class="lista">
+                <li>
+                    <h3>Jakiœ tytu³</h3>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero arcu, vulputate sit amet mattis sit amet, ultrices in erat.</div>
+                </li>
+                <li>
+                    <h3>Jakiœ tytu³</h3>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero arcu, vulputate sit amet mattis sit amet, ultrices in erat.</div>
+                </li>
+                <li>
+                    <h3>Jakiœ tytu³</h3>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero arcu, vulputate sit amet mattis sit amet, ultrices in erat.</div>
+                </li>
+                <li>
+                    <h3>Jakiœ tytu³</h3>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero arcu, vulputate sit amet mattis sit amet, ultrices in erat.</div>
+                </li>
+                <li>
+                    <h3>Jakiœ tytu³</h3>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero arcu, vulputate sit amet mattis sit amet, ultrices in erat.</div>
+                </li>
+                <li>
+                    <h3>Jakiœ tytu³</h3>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero arcu, vulputate sit amet mattis sit amet, ultrices in erat.</div>
+                </li>
+                <li>
+                    <h3>Jakiœ tytu³</h3>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero arcu, vulputate sit amet mattis sit amet, ultrices in erat.</div>
+                </li>
+                <li>
+                    <h3>Jakiœ tytu³</h3>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero arcu, vulputate sit amet mattis sit amet, ultrices in erat.</div>
+                </li>
+            </ul>
+        </div>
+        <input type="button" value="&gt;" class="next" />
+    </div>
+    </p>
+    
+	
+	<script>
+$(document).ready(function() {
+        var $sliders = $('.slider');
+
+        //dla kazdego slidera na stronie...
+        $sliders.each(function() {
+            var $current_slider = $(this);
+            var $lista = $('.lista', $current_slider);
+            var $li = $lista.children('li');
+
+            //je¿eli dla danego slidera LI jest wiêcej od 3 to bêdzie mo¿na przewijaæ, inaczej nie ma sensu
+
+            if ($li.length > 3) {
+                //wyliczamy odleg³oœæ pojedynczego przesuniêcia
+                var odleglosc = $li.eq(0).outerWidth() + parseInt($li.eq(0).css('margin-left')) + parseInt($li.eq(0).css('margin-right'));
+                
+                //maksymalne przesuniecie w lewo
+				var maxLeft = odleglosc * $li.length - 3 * odleglosc;
+               // var maxLeft = $li.length;
+				
+                //po klikniêciu na przycisk Poprzednie, przesówamy nasz¹ listê w lewo
+                $('.next', $current_slider).click(function() {
+                    if ($lista.position().left > -maxLeft) {
+                        $($lista).not(':animated').animate({
+                            'left' : '-='+odleglosc
+                        },500);
+                    }
+                });
+
+                $('.prev', $current_slider).click(function() {
+                    if ($lista.position().left<0) {
+                        $($lista).not(':animated').animate({
+                            'left' : '+='+odleglosc
+                        },500);
+                    }
+                });
+
+            } else {
+
+                //je¿eli dla danego slidera przewijanie ma nie dzia³aæ, wy³¹czmy dzia³anie jego next i prev
+                $('.next, .prev', $current_slider).click(function() {
+                    $(this).preventDefault();
+                    return false;
+                });
+
+            }
+        });
+    });
+</script>
+    

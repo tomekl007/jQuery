@@ -1,0 +1,430 @@
+ï»¿<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title> ... </title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+</head>
+
+<link rel="stylesheet" href="hangman.css" />
+
+<div class="plansza">
+<canvas width="200" height="150" id="canvas">Twoja przegl¹darka nie obs³uguje canvas</canvas>
+    <div class="proby">
+    </div>
+ 
+    <ul class="haslo">
+    </ul>
+</div>
+ 
+
+ <ul class="literki">
+<li class="disabled">a</li>
+<li class="disabled">Ä…</li>
+<li class="disabled">b</li>
+<li class="disabled">c</li>
+<li class="disabled">Ä‡</li>
+<li class="disabled">d</li>
+<li class="disabled">e</li>
+<li class="disabled">Ä™</li>
+<li class="disabled">f</li>
+<li class="disabled">g</li>
+<li class="disabled">h</li>
+<li class="disabled">i</li>
+<li class="disabled">j</li>
+<li class="disabled">k</li>
+<li class="disabled">l</li>
+<li class="disabled">Å‚</li>
+<li class="disabled">m</li>
+<li class="disabled">n</li>
+<li class="disabled">Å„</li>
+<li class="disabled">o</li>
+<li class="disabled">Ã³</li>
+<li class="disabled">p</li>
+<li class="disabled">q</li>
+<li class="disabled">r</li>
+<li class="disabled">s</li>
+<li class="disabled">Å›</li>
+<li class="disabled">t</li>
+<li class="disabled">u</li>
+<li class="disabled">v</li>
+<li class="disabled">w</li>
+<li class="disabled">x</li>
+<li class="disabled">y</li>
+<li class="disabled">z</li>
+<li class="disabled">Åº</li>
+<li class="disabled">Å¼</li>
+    </ul>
+
+    <input type="button" value="Rozpocznij nowÄ… grÄ™ :)" id="startGry" />
+</div>
+ <script>
+var aktualneHaslo = ''; //aktualnie pobrane has³o
+var dostepneProby = 9; //ile prób zosta³o dla aktualnej gry
+ 
+//startujemy gre po klikniêciu na przycisk
+   //startujemy gre po klikniêciu na przycisk
+     //startujemy gre po klikniêciu na przycisk
+	 
+	 //jest proble ze zwracana wartoscia przez hangman_server.php -> sprawdz to,
+	 //nie ma problemu z funkjca ajax-> laczy sie z serverem "VertigoServ"
+   /* function startGame() {
+        $.ajax({
+            type     : "POST",
+            url      : "http://127.0.0.1/hangman_server.php",
+            data     : {
+                action : 'startGame'
+            },
+            success : function(msg) {
+                dostepneProby = 5;
+                ustawHaslo(msg);
+                pokazProby();
+                ustawLiterki();
+            }
+        });
+    }*/
+	//funkjca aby nie trzeba sie laczyc z serv, trzeba to zmienic, bo hasla sa widoczne
+function startGame(){
+	$hasla = new Array(
+    "Fantomas",
+    "Super Szamson",
+    "HasÅ‚o",
+    "michalek",
+    "ronaldo",
+    "wielki Waldek",
+    "wartel",
+    "pierog",
+    "messi",
+    "waclaw"
+);
+
+dostepneProby = 9;
+//promptForPassword();
+//ustawHaslo($hasla[Math.round(Math.random()*10)]);
+clearCanvas();
+pokazProby();
+ustawLiterki();
+}
+
+function clearCanvas(){
+
+var canvas = document.getElementById('canvas');
+if (canvas.getContext){
+var ctx = canvas.getContext('2d');
+  ctx.fillStyle="#fff";
+ctx.fillRect(0,0,150,200);
+
+}
+}
+
+//function promptForPassword(){
+
+    function oknoPrompt() {
+    var password = prompt('Podaj haslo do zgadniecia przez twojego Kompana:', '');
+        if (password != null) {
+            //alert('Witaj ' + imie);
+			ustawHaslo(password);
+        } else {
+            alert('Nie podales hasla, wiec wybiore losowe');
+			ustawHaslo($hasla[Math.round(Math.random()*10)]);
+        }
+    }
+ 
+    //document.getElementById('startGry').onclick = function() {
+  //      oknoPrompt()
+   // }
+
+
+
+//}
+
+	
+	
+	
+
+
+//ustawiamy haslo
+    function ustawHaslo(haslo) {
+	//aktualneHaslo - wtej zmiennej przetrzymuje haslo ktore dostalem od f.startGame
+        aktualneHaslo = haslo.toUpperCase();
+        var $hasloList = $('.haslo');
+        $hasloList.empty();
+        var letters = aktualneHaslo.split('');
+        for (var i=0; i<letters.length; i++) {
+            if (letters[i]==' ') {
+                $hasloList.append('<li class="space"></li>')
+            } else {
+                $hasloList.append('<li></li>')
+            }
+        }
+    }
+//Kolejna prosta funkcja któr¹ napiszemy to pokazProby(). 
+function pokazProby() {
+    //.text - Set the text contents of all matched elements. 
+	//Similar to html(), but escapes HTML (replace "" and ">" with their HTML entities).
+    //Cannot be used on input elements. For input field text use theval attribute .
+    $('.proby').text(dostepneProby);
+	
+    drawHangman();
+	
+	if(dostepneProby<=9 && dostepneProby>4){
+	 $('.proby').css('color','#333');
+	 }
+	 if(dostepneProby<4){
+	  $('.proby').css('color','#FF3030');
+	 // $('.proby').animate({ 
+		//	color : '#FF3030'
+		//}, 500 );
+	}
+	
+}
+
+
+
+//to nie powiino byc w globalScope, ale jak wkladam do funkjci drawHandman to nie persist
+var wspEndElipse = new Array();
+var wspStartElipse = new Array();
+var wspEndNeck = new Array();
+var wspEndSpine = new Array();
+var wspUpLine = new Array();
+
+function drawHangman(){
+
+
+var canvas = document.getElementById('canvas');
+if (canvas.getContext){
+var ctx = canvas.getContext('2d');
+
+
+
+
+  switch(dostepneProby)
+  {
+  //head
+  case 8: 
+     wspEndElipse = drawEllipse(ctx, 10, 20, 40, 40);
+	 wspStartElipse[0] =  wspEndElipse[0];
+	 wspStartElipse[1] =  wspEndElipse[1]-40;
+	 console.log(wspEndElipse);
+     break;
+  //neck
+  case 7:
+    ctx.beginPath();
+				//gorne ramie
+				ctx.moveTo(wspEndElipse[0],wspEndElipse[1]);
+				console.log("moveTo: " + wspEndElipse[0] +", " + wspEndElipse[1]);
+				wspEndNeck[0] = wspEndElipse[0];
+				wspEndNeck[1] = (wspEndElipse[1] + 10);
+				ctx.lineTo(wspEndElipse[0],wspEndElipse[1]+10)
+				console.log("lineTo: " + (wspEndElipse[0]+10) +", " + wspEndElipse[1]);
+				ctx.closePath();
+				ctx.stroke();
+    break;
+  //first arm
+  case 6:
+     ctx.beginPath();
+	 ctx.moveTo(wspEndNeck[0],wspEndNeck[1]);
+	 ctx.lineTo(wspEndNeck[0]-15,wspEndNeck[1]+15 );
+	 ctx.closePath();
+	 ctx.stroke();
+  
+    break;
+	//second arm
+  case 5:
+     ctx.beginPath();
+     ctx.moveTo(wspEndNeck[0],wspEndNeck[1]);
+	 ctx.lineTo(wspEndNeck[0]+15,wspEndNeck[1]+15 );
+     ctx.closePath();
+	 ctx.stroke();
+  
+     break;
+	//spine
+  case 4:
+     ctx.beginPath();
+	 ctx.moveTo(wspEndNeck[0],wspEndNeck[1]);
+	 ctx.lineTo(wspEndNeck[0],wspEndNeck[1]+30 );
+	 wspEndSpine[0] = wspEndNeck[0];
+	 wspEndSpine[1] = (wspEndNeck[1] + 30);
+     ctx.closePath();
+	 ctx.stroke();
+     
+	 break;
+  //first leg	 
+   case 3:
+      ctx.beginPath()
+	  ctx.moveTo(wspEndSpine[0], wspEndSpine[1]);
+	  ctx.lineTo(wspEndSpine[0]-15, wspEndSpine[1]+15);
+      ctx.closePath();
+	  ctx.stroke();
+     break;
+  //second leg
+   case 2:	 
+    ctx.beginPath()
+	  ctx.moveTo(wspEndSpine[0], wspEndSpine[1]);
+	  ctx.lineTo(wspEndSpine[0]+15, wspEndSpine[1]+15);
+      ctx.closePath();
+	  ctx.stroke();
+     break;
+	//line
+	case 1:
+	 ctx.beginPath()
+	  ctx.moveTo(wspStartElipse[0], wspStartElipse[1]);
+	  ctx.lineTo(wspStartElipse[0], wspStartElipse[1]-10);
+	  wspUpLine[0] = wspStartElipse[0];
+	  wspUpLine[1] = wspStartElipse[1]-10;
+      ctx.closePath();
+	  ctx.stroke();
+     break;
+	//end of hangman
+	case 0:
+	 ctx.beginPath()
+	 ctx.moveTo(wspUpLine[0], wspUpLine[1]);
+	 ctx.lineTo(wspUpLine[0]+15, wspUpLine[1]);
+	 ctx.closePath();
+	 ctx.stroke();
+	
+  }
+ 
+ 
+ }
+
+}
+
+function drawEllipse(ctx, x, y, w, h) {
+  var kappa = .5522848;
+      ox = (w / 2) * kappa, // control point offset horizontal
+	  console.log("ox :"+ ox);
+      oy = (h / 2) * kappa, // control point offset vertical
+	  console.log("oy :"+ oy);
+      xe = x + w,           // x-end
+	  console.log("xe :"+ xe);
+      ye = y + h,           // y-end
+	  console.log("ye :"+ ye);
+      xm = x + w / 2,       // x-middle
+	  console.log("xm :"+ xm);
+      ym = y + h / 2;       // y-middle
+	  console.log("ym :"+ ym);
+
+  ctx.beginPath();
+  ctx.moveTo(x, ym);
+  ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+  ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+  ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+  ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+  ctx.closePath();
+  ctx.stroke();
+   //zwracam tablice z wsp[x,y] gdzie konczy sie(od dolu) narysowany okrag
+   var wspEnd = new Array(xm, ye);
+   
+   return wspEnd;
+}    
+
+
+
+ 
+ //Kolejna metoda któr¹ napiszemy to ustawLiterki(). Ma ona za zadanie w³¹czenie dzia³ania naszych guzików 
+ //do wyboru litery oraz podpiêcie im zdarzenia click. Wczeœniej czyœci ona ich stan. Start gry mo¿e byæ
+// przecie¿ odpalony drugi czy trzeci raz, wtedy stan wybranych przycisków-liter bêdzie zmieniony.
+function ustawLiterki() {
+    var $literki = $('.literki li');
+ 
+ //unbind - This does the opposite of bind, it removes bound events from each of the matched elements.
+//Without any arguments, all bound events are removed
+    $literki.unbind().removeClass('disabled'); //czyœcimy stan przycisków
+ 
+ //[pd[inam zdarzenie click pod kazdy ul. li
+    $literki.bind('click',function() {
+	/*Get the combined text contents of all matched elements. 
+	The result is a string that contains the combined text contents 
+	of all matched elements. This method works on both HTML and XML documents.
+	Cannot be used on input elements. For input field text use theval attribute .
+Returns
+Return type String*/
+        var litera = $(this).text();
+        check_letter(litera);
+        disableButtons($(this));
+    })
+}
+
+// Po klikniêciu w dany przycisk z literk¹ wybieramy j¹ i odpalamy funkcjê "sprawdŸ literê". 
+//Wybranie litery mo¿e siê odbyæ tylko raz, dlatego wybrany guzik jest wy³¹czany za pomoc¹ dodatkow¹ 
+//metodê disableButtons().
+function disableButtons($guziki) {
+    $guziki.addClass('disabled').unbind(); //wylaczamy przekazane guziki i dodajemy im klasê disabled
+}
+ 
+ //Jak przed chwil¹ napisa³em po klikniêciu na przycisk z liter¹ sprawdzamy czy jest ona w danym haœle:
+function check_letter(litera) {
+    var literka = litera.toUpperCase();
+	//indexOf -Returns the first index at which a given element can be found in the array, or -1 if it is not present.
+    if (aktualneHaslo.indexOf(literka)!=-1) {   //je¿eli litera istenieje w haœle
+        for (var i=0; i<aktualneHaslo.length; i++) {
+            if (aktualneHaslo[i] == literka) {
+	/*html - Summary Set the html contents of every matched element. 
+This property is not available on XML documents (although it will work for XHTML documents).
+Parameters
+{String} val Set the html contents to the specified value.*/
+                $('.haslo li').eq(i).html(litera) //wstawiamy w odpwoiednie LI wybran¹ literê
+            }
+        }
+		
+		 if (!isMissingLetterExists()) { //je¿eli nie ma ju¿ nieodgadniêtych liter...
+            completeGame();
+        }
+		
+    } else {    //nie ma takiej litery
+        dostepneProby--;
+        pokazProby();
+		
+		 if (dostepneProby <= 0) { //je¿eli nie ma ju¿ prób...
+            gameOver();
+        }
+    }
+}
+
+/*Do sprawdzenia czy po wstawieniu litery do has³a istniej¹ jeszcze nieodgadniête miejsca pos³u¿ymu 
+siê prostym trikiem. Wystarczy "przeskanowaæ" wszystkie LI naszej listy ".has³o" i sprwadziæ czy nie 
+s¹ puste. W³aœnie to zadanie wykona metoda isMissingLetterExists(): */
+function isMissingLetterExists() {
+//Pobieramy wszystkie LI z listy .haslo;
+    if ($('.haslo li').filter( function() {
+	return ( !$(this).hasClass('space') && $(this).is(':empty') )? true: false
+	} ).length) {
+        //Za pomoc¹ metody filter filtrujemy z powy¿szego zbioru tylko te 
+		//elementy które NIE maj¹ klasy "space" i s¹ puste
+		return true;
+		//Sprwdzamy d³ugoœæ otrzymanego wyniku. Je¿eli jest wiêksza od 0 znaczy to ¿e w 
+		//naszej liœcie z has³e wci¹¿ s¹ puste miejsca na literê
+    } else {
+        return false;
+    }
+}
+
+
+ //W zasadzie pozosta³y nam 2 funkcje do napisania: pozywywne i negatywne zakoñczenie gry :).
+// W obydwu przypadkach po zakoñczeniu gry wy³¹czmy wszystkie guziki z literkami by przypadkiem 
+//gracza nie swêdzia³y paluszki. Do wy³¹czenia wykorzystamy wczeœniej napisan¹ funkcjê disableButtons,
+// tym razem przekazuj¹c do niej wszystkie literki na raz :)
+
+	
+//negatywne zakoñcznie gry
+function gameOver() {
+    alert("Niestety nie udaÅ‚o ci siÄ™ odgadnÄ…Ä‡ hasla Ps: brzmi ono: \n\n" + aktualneHaslo);
+    disableButtons($('.literki li'));
+}
+
+//pozytywne zakoñczenie gry
+function completeGame() {
+    alert('UdaÅ‚o ci siÄ™ odgadnÄ…Ä‡ hasÅ‚o :)');
+    disableButtons($('.literki li'));
+}
+//Silnik naszej gry zosta³ napisany. Ostatnie zadanie w JS to pod³¹czenie pod przycisk 
+//startuj¹cy grê naszej pocz¹tkowej funkcji: 
+$(document).ready(function() {
+    $('#startGry').click(function() {
+        startGame(),oknoPrompt();
+    })
+})
+
+</script> 
+ 
+ 

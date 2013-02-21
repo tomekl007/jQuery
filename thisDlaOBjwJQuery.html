@@ -1,0 +1,26 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<style>
+p#nty {background:#fffb9b; border:3px solid #e4d029; font:bold 12px Tahoma; color:#e4d029; padding:10px}
+</style>
+
+
+
+	
+	<p>
+	<a class="link" href="http://jakis_adres.com">Poka¿ href</a> &nbsp; <a class="link" href="http://jakis_inny_adres.com">Poka¿ href</a>
+	</p>
+	
+<script>
+$(document).ready(function() {
+/*Dla ka¿dego (each) pobranego p wykonujemy funkcjê,
+ w której ustawiamy dla p kolor niebieski
+ wraz z podkreœleniem, oraz ustawiamy zdarzenie click,
+ w którym wykonujemy funkcjê
+ wyœwietlaj¹c¹ okienko alert z atrybutem href danego p*/
+  $('p').css({color:blue,textDecoration:underline})
+      .click(function() {
+            alert('Link prowadzi do: ' + $(this).attr('href'))
+      })
+})
+	
+</script>

@@ -1,0 +1,121 @@
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	
+
+	<link rel="stylesheet" href="jquery.jscrollpane.css" />
+	<script src="jquery.mousewheel.js"></script>
+	<script src="jquery.jscrollpane.min.js"></script>
+<style>
+		.popup {/*dla popupu kiedy jest niewidoczny(domyslnie)*/
+			position: 				fixed;
+			top:					0;
+			left:					0;
+			width:					100%;
+			height:					100%;
+			z-index:				1000;
+			display:				none; /* domyœlnie nie pokazujemy popupa */
+		}
+
+		.popup .bg {/*dla background when popup pops out*/
+			position: 				absolute;
+			top:					0;
+			left:					0;
+			width:					100%;
+			height:					100%;
+			z-index:				1;
+			background:				#000;
+			opacity:				0.7;
+		}
+
+		.popup .container {
+			width:					400px;
+			height:					300px;
+			position:				absolute;
+			z-index: 				2;
+			top:					50%;
+			left:					50%;
+			margin-top:				-150px;	/* minus po³owa wysokoœci */
+			margin-left:			-200px; /* minus po³owa szerokoœci */
+			background:				#fff;
+			-moz-border-radius:		10px;
+			-webkit-border-radius:	10px;
+			border-radius:			10px;
+			-moz-box-shadow:		0 0 50px #000;
+			-webkit-box-shadow:		0 0 50px #000;
+			box-shadow:				0 0 50px #000;
+		}
+		
+/*klasa dla buttona close*/
+		.popup .close {
+			width:					13px;
+			height:					13px;
+			display:				block;
+			border:					0;
+			cursor:					pointer;
+			position:				absolute;
+			top:					10px;
+			right:					10px;
+			text-indent: 			-999em;
+			overflow: 				hidden;
+			background: 			url(../close.png) no-repeat;/*tu moge dodac zdjecie "x" ktory symbloizuje zamknieice*/
+		}
+		
+/*dla content of popup*/
+		.popup .content {
+			margin:					15px 25px 15px 15px;
+			width:					360px;
+			height:					270px;
+			font: 					12px 'Segoe UI', Arial, sans-serif;
+			color:					#444;
+			overflow: 				auto;
+		}
+	</style>
+	
+	
+<p>
+		<a href="#" class="link2 demo_link">Poka¿ ³adniejszy popup :)</a>
+	</p>	
+
+<div class="popup popup2">
+	<div class="bg"></div>
+	<div class="container">
+		<input type="button" class="close" value="x" />
+		<div class="content">
+			<div>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero arcu, vulputate sit amet mattis sit amet, ultrices in erat. Aenean suscipit arcu ac lorem lacinia ut scelerisque turpis commodo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas non justo vitae risus ornare convallis. Phasellus tristique ultricies leo, vitae posuere quam sollicitudin ut. Praesent eget neque sit amet augue bibendum accumsan. Morbi sed fringilla sem. In quam lectus, placerat in laoreet in, ullamcorper vel lacus. Nunc pellentesque suscipit sollicitudin. Aenean sollicitudin metus eget lectus rutrum luctus. Aliquam erat volutpat. Integer nulla erat, auctor vitae blandit ac, vestibulum in turpis. Mauris nec velit enim, vitae elementum risus. Aliquam nisi lectus, interdum a viverra ut, tristique at risus. Aliquam sit amet risus sed ante consequat bibendum. In bibendum, libero sit amet hendrerit commodo, ligula metus lobortis elit, vitae vulputate nibh lacus condimentum felis. Nullam a dolor ut diam ultrices malesuada. Fusce lacus nibh, facilisis sed semper quis, ornare id mauris.
+			Etiam metus odio, commodo sed malesuada a, elementum nec velit. In luctus tellus ut felis elementum auctor. Donec condimentum, justo blandit accumsan vehicula, magna mauris ultricies erat, in vulputate tortor nisl et massa. Nunc ut nunc vel lorem viverra interdum quis ac lectus. Sed porta rhoncus pharetra. Sed tortor mi, ultrices in tincidunt et, mollis ac augue. Etiam id nulla vehicula libero iaculis condimentum in at ligula. Morbi porta arcu quis sem condimentum scelerisque. Ut at eros lacus, id viverra tellus. Integer sed tempus eros. Duis sed mi eget urna laoreet auctor a sed velit.
+			Integer tellus odio, tempus ut gravida vel, aliquam a metus. Curabitur sed augue diam, id dictum nulla. Nullam massa magna, placerat eu faucibus vitae, aliquam et odio. Morbi ultrices mauris eget arcu commodo a adipiscing justo scelerisque. Cras mi orci, lobortis fringilla vehicula at, imperdiet a velit. Morbi nec nulla diam. Nullam placerat accumsan aliquet. Aenean cursus, est ut ullamcorper auctor, dolor velit facilisis diam, ut blandit diam velit a augue. Pellentesque lectus risus, tincidunt adipiscing dapibus sit amet, commodo quis odio. Etiam consequat posuere metus sit amet sollicitudin. Integer suscipit pretium diam, ut rhoncus diam placerat eu. Etiam ut metus odio. Quisque vestibulum consequat tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+			Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris dolor ligula, tincidunt ut hendrerit eu, aliquam dapibus metus. Ut nisl felis, rhoncus et dignissim bibendum, sollicitudin sit amet metus. Proin ac massa augue. Aliquam hendrerit nunc sed nunc commodo vel aliquam diam eleifend. Praesent rutrum est mollis lorem scelerisque lobortis. Ut consectetur ullamcorper ligula ut consectetur. Donec sollicitudin volutpat auctor. Etiam dignissim pharetra porttitor. Etiam ut velit quis elit ullamcorper ultrices quis at nisi. Quisque sollicitudin ante tempus odio euismod dictum. Integer metus lacus, commodo sit amet euismod et, fermentum accumsan metus. Aliquam congue ipsum nec nulla molestie quis porta tellus gravida. Morbi nulla mi, porta id convallis sit amet, ultricies ac elit. Nulla iaculis nulla quis odio vestibulum aliquam. Sed hendrerit nunc quis mauris convallis faucibus malesuada metus consequat. Integer massa tellus, commodo non elementum sed, bibendum ut quam.
+			Proin dignissim, dolor at commodo molestie, lorem est ornare mi, in rutrum sapien mauris sed ligula. Etiam lorem velit, sagittis a mollis ut, pretium nec ipsum. Etiam vel dui et ipsum fermentum pharetra in ut metus. Vestibulum velit urna, iaculis id tempor non, tempus sit amet nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut ornare, nunc sed interdum euismod, nisl libero rhoncus mauris, eu rutrum odio mi vel ipsum. Praesent vitae risus leo. Donec odio nisi, condimentum ut commodo a, aliquam nec leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut posuere fermentum est, vitae dictum nunc facilisis posuere. Suspendisse hendrerit vestibulum elit vel cursus. Integer sed libero neque. Etiam urna neque, lobortis at semper sit amet, ornare et ante. Vestibulum libero nunc, ultricies a feugiat quis, sodales quis augue. Vestibulum malesuada, risus nec pharetra dictum, nisi diam viverra tortor, nec sagittis lorem ipsum sed nulla. Mauris blandit molestie facilisis. Pellentesque vel elit magna. Cras placerat nibh quis odio viverra posuere. Suspendisse nec odio sed est facilisis accumsan eu vitae tortor.
+			</div>
+		</div>
+	</div>
+</div>	
+	
+<script>
+	$(document).ready(function(){
+		$('.link2').click(function(e) {
+			//je¿eli popup nie jest widoczny to go poka¿
+			if (!$('.popup2:visible').length) {//zminiam .popup dispaly na visable
+				$('.popup2').show();
+				$('.popup2 .content').jScrollPane(//do okienka(content) dodaje jScrollPane w .css .jsp
+					{
+						showArrows: true,
+						verticalDragMinHeight: 		29,
+						verticalDragMaxHeight: 		29,
+						horizontalDragMinWidth: 	16,
+						horizontalDragMaxWidth: 	16
+					}
+				);
+			}
+			//prevet default, zeby <a href o klasie .link2 nie dialal defaultowo(jak link)
+			e.preventDefault();
+			return false;
+		});
+
+		//zdarzenie zamkniêcia podpinamy pod przycisk close i pod t³o popupa
+		$('.popup .close, .popup .bg').click(function() {
+			$(this).parents('.popup').fadeOut();
+		});
+	});
+</script>	
+

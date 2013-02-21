@@ -1,0 +1,64 @@
+﻿<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title> ... </title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+</head>
+
+<link rel="stylesheet" href="hangman.css" />
+
+<div class="plansza">
+<canvas width="200" height="150" id="canvas">Twoja przegl�darka nie obs�uguje canvas</canvas>
+    <div class="proby">
+    </div>
+ 
+    <ul class="haslo">
+    </ul>
+</div>
+ 
+
+ <ul class="literki">
+<li class="disabled">a</li>
+<li class="disabled">ą</li>
+<li class="disabled">b</li>
+<li class="disabled">c</li>
+<li class="disabled">ć</li>
+<li class="disabled">d</li>
+<li class="disabled">e</li>
+<li class="disabled">ę</li>
+<li class="disabled">f</li>
+<li class="disabled">g</li>
+<li class="disabled">h</li>
+<li class="disabled">i</li>
+<li class="disabled">j</li>
+<li class="disabled">k</li>
+<li class="disabled">l</li>
+<li class="disabled">ł</li>
+<li class="disabled">m</li>
+<li class="disabled">n</li>
+<li class="disabled">ń</li>
+<li class="disabled">o</li>
+<li class="disabled">ó</li>
+<li class="disabled">p</li>
+<li class="disabled">q</li>
+<li class="disabled">r</li>
+<li class="disabled">s</li>
+<li class="disabled">ś</li>
+<li class="disabled">t</li>
+<li class="disabled">u</li>
+<li class="disabled">v</li>
+<li class="disabled">w</li>
+<li class="disabled">x</li>
+<li class="disabled">y</li>
+<li class="disabled">z</li>
+<li class="disabled">ź</li>
+<li class="disabled">ż</li>
+    </ul>
+
+    <input type="button" value="Rozpocznij nową grę :)" id="startGry" />
+</div>
+ <script>
+eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('<12>d D=\'\';d E=9;f 13(){$M=F G("1w","1x 1y","1zło","1A","1B","1C 1D","1E","1F","1G","1H");E=9;S();14()}f 16(){d a=1I(\'1J N 1K 1L 1M 1N 1O:\',\'\');p(a!=1P){T(a)}U{V(\'1Q 1R M, 1S 1T 1U\');T($M[17.1V(17.1W()*10)])}}f T(a){D=a.18();d b=$(\'.N\');b.19();d c=D.1X(\'\');1a(d i=0;i<c.W;i++){p(c[i]==\' \'){b.1b(\'<q 1Y="1c"></q>\')}U{b.1b(\'<q></q>\')}}}f S(){$(\'.1d\').1e(E);1f();p(E<4){$(\'.1d\').1Z(\'21\',\'#22\')}}d g=F G();d r=F G();d e=F G();d j=F G();d H=F G();f 1f(){d a=1g.23(\'24\');p(a.1h){d b=a.1h(\'2d\');25(E){s 8:g=1i(b,10,20,X,X);r[0]=g[0];r[1]=g[1]-X;t.u(g);C;s 7:b.v();b.k(g[0],g[1]);t.u("k: "+g[0]+", "+g[1]);e[0]=g[0];e[1]=(g[1]+10);b.z(g[0],g[1]+10)t.u("z: "+(g[0]+10)+", "+g[1]);b.A();b.B();C;s 6:b.v();b.k(e[0],e[1]);b.z(e[0]-15,e[1]+15);b.A();b.B();C;s 5:b.v();b.k(e[0],e[1]);b.z(e[0]+15,e[1]+15);b.A();b.B();C;s 4:b.v();b.k(e[0],e[1]);b.z(e[0],e[1]+1j);j[0]=e[0];j[1]=(e[1]+1j);b.A();b.B();C;s 3:b.v()b.k(j[0],j[1]);b.z(j[0]-15,j[1]+15);b.A();b.B();C;s 2:b.v()b.k(j[0],j[1]);b.z(j[0]+15,j[1]+15);b.A();b.B();C;s 1:b.v()b.k(r[0],r[1]);b.z(r[0],r[1]-10);H[0]=r[0];H[1]=r[1]-10;b.A();b.B();C;s 0:b.v()b.k(H[0],H[1]);b.z(H[0]+15,H[1]);b.A();b.B()}}}f 1i(a,x,y,w,h){d b=.26;I=(w/2)*b,t.u("I :"+I);J=(h/2)*b,t.u("J :"+J);L=x+w,t.u("L :"+L);K=y+h,t.u("K :"+K);l=x+w/2,t.u("l :"+l);m=y+h/2;t.u("m :"+m);a.v();a.k(x,m);a.O(x,m-J,l-I,y,l,y);a.O(l+I,y,L,m-J,L,m);a.O(L,m+J,l+I,K,l,K);a.O(l-I,K,x,m+J,x,m);a.A();a.B();d c=F G(l,K);P c}f 14(){d b=$(\'.Y q\');b.1k().27(\'1l\');b.28(\'1m\',f(){d a=$(Q).1e();1n(a);R($(Q))})}f R(a){a.29(\'1l\').1k()}f 1n(Z){d 11=Z.18();p(D.2a(11)!=-1){1a(d i=0;i<D.W;i++){p(D[i]==11){$(\'.N q\').2b(i).2c(Z)}p(!1o()){1p()}}U{E--;S();p(E<=0){1q()}}}f 1o(){p($(\'.N q\').2e(f(){P(!$(Q).2f(\'1c\')&&$(Q).2g(\':19\'))?1r:1s}).W){P 1r;P 1s}}f 1q(){V("2h 2i 2jło 1t 1uę 1vąć M 2k: 2l 2m: \\n\\n"+D);R($(\'.Y q\'))}f 1p(){V(\'2nło 1t 1uę 1vąć 2oło :)\');R($(\'.Y q\'))}$(1g).2p(f(){$(\'#2q\').1m(f(){13(),16()})})</12>',62,151,'|||||||||||||var|wspEndNeck|function|wspEndElipse|||wspEndSpine|moveTo|xm|ym|||if|li|wspStartElipse|case|console|log|beginPath||||lineTo|closePath|stroke|break|aktualneHaslo|dostepneProby|new|Array|wspUpLine|ox|oy|ye|xe|hasla|haslo|bezierCurveTo|return|this|disableButtons|pokazProby|ustawHaslo|else|alert|length|40|literki|litera||literka|script|startGame|ustawLiterki||oknoPrompt|Math|toUpperCase|empty|for|append|space|proby|text|drawHangman|document|getContext|drawEllipse|30|unbind|disabled|click|check_letter|isMissingLetterExists|completeGame|gameOver|true|false|ci|si|odgadn|Fantomas|Super|Szamson|Has|michalek|ronaldo|wielki|Waldek|wartel|pierog|messi|waclaw|prompt|Podaj|do|zgadniecia|przez|twojego|Kompana|null|Nie|podales|wiec|wybiore|losowe|round|random|split|class|css||color|FF3030|getElementById|canvas|switch|5522848|removeClass|bind|addClass|indexOf|eq|html||filter|hasClass|is|Niestety|nie|uda|Ps|brzmi|ono|Uda|has|ready|startGry'.split('|'),0,{}))
+</script> 
+ 
+ 

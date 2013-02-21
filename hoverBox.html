@@ -1,0 +1,96 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<style>
+/*Poruszanie za stron¹ osi¹gniemy w najprostszy mo¿liwy sposób, czyli poprzez wykorzystanie CSS,
+ a dok³adnie z wykorzystaniem pozycjonowania Fixed: */
+.page_hover_box {
+    padding:5px;
+    position:fixed;
+    right:-250px;
+    top:125px;
+    background:#687BC3;
+    overflow:hidden;
+    width:300px;
+    height:150px;
+    z-index:9999;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -border-radius:5px;
+    -moz-box-shadow:0 1px 2px #333;
+    -webkit-box-shadow:0 1px 2px #333;
+    -box-shadow:0 1px 2px #333;
+}
+</style>
+
+<div class="box">
+    <div class="content">
+        <input type="text" />
+    </div>
+</div>
+
+<script>
+	(function($){
+		$.fn.followBox = function(options) {
+			options = $.extend({
+				min	: -10
+			}, options);
+
+			return this.each(function() {
+				var $box = $(this);
+				/*Pierwsze czynnoœci jakie wykonamy to zaaplikowanie wybranemu
+				elementowi naszego stylowania (jak za³o¿yliœmy przed chwil¹).
+Stworzymy te¿ zmienn¹ przechowuj¹c¹ aktualny stan boxa (wysuniêty, schowany): */
+                box.addClass('page_hover_box');
+				var boxHide = 1;
+				var posRight = $box.css('right');
+				var posLeft =  options.min;
+
+				hideBox = function() {
+					$box.not(':animated').animate({
+						'right': posRight//przesuwam posRight do jej poczatkowego polozenia : posRight
+					},500, function() {
+						boxHide = 1;
+						$(document).unbind('mousedown', checkOuterBox);
+
+					});
+				}
+//Nasz boxik wyjecha³ na ekran. Do dokumentu podpinamy wiêc dokumentu zdarzenie, 
+//które bêdzie go chowa³o. Tworzymy wiêc kolejn¹ metodê "checkOuterBox": 
+				checkOuterBox = function(event) {
+				/*Jej dzia³anie jest bardzo proste. Ka¿de zdarzenie zawiera pewne informacje o sobie. 
+			    W naszym przypadku skorzystaliœmy
+				z w³aœciwoœci .target, która zawiera aktualnie obs³ugiwany przez to zdarzenie element 
+				(w naszym przypadku klikniêty - bo przecie¿ zdarzenie jest click). 
+				Wystarczy wiêc podstawiæ t¹ w³aœciwoœæ do jQuery, a nastêpnie skorzystaæ z metody closest,
+				która sprawdza, czy dany element jest we wnêtrzu innego (nie musi le¿eæ bezpoœrednio w nim). 
+				Nie jest to mo¿e najsprawniejsza metoda, ale dzia³a i jest prosta.
+Je¿eli klikniêty element nie znajduje siê w boxie, oznacza to, ¿e klikniêcie nast¹pi³o poza boxem - 
+czyli mo¿emy go schowaæ. Aby to zrobiæ, napiszmy kolejn¹ metodê - chowaj¹c¹ nasze pude³ko.*/
+					if ($(event.target).closest('.page_hover_box').length!=1) {
+						hideBox();
+					}
+				}
+/*Kolejn¹ rzecz¹ bêdzie podpiêcie do naszego boxa zdarzenia click, które bêdzie pokazywa³o lub 
+chowa³o naszego bohatera: Je¿eli box jest schowany, wtedy klikniêcie na nim bêdzie go wysuwa³o.
+Je¿eli blok jest ju¿ wysuniêty, wtedy dla dokumentu podepniemy zdarzenie "mousedown",
+ które bêdzie nasz box chowa³o.*/
+				$box.click(function() {
+					if (boxHide!=1) return;
+					$box.not(':animated').animate({
+						'right' : posLeft//przesuwam position right do posLeft(min)
+					},500, function() {
+						boxHide = -boxHide//ustaiwam boxHide na -1 -> wysuniety
+						//mousedown - klikniecie na obszarze
+						$(document).bind('mousedown', checkOuterBox);
+					});
+				});
+			});
+		}
+	})(jQuery);
+
+	$(document).ready(function(){
+		$('.box').followBox({
+			min : -20
+		});
+	});
+</script>
+

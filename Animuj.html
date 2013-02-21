@@ -1,0 +1,90 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+<style>
+div#block {width:100px; height:100px; background:#f17575; border:1px solid #8c0000; 
+           font:bold 12px Tahoma; text-align:center; overflow:hidden; color:#cc0000; 
+		   line-height:100px}
+
+p#nty {background:#fffb9b; border:3px solid #e4d029; 
+       font:bold 12px Tahoma; color:#e4d029; padding:10px}
+	   
+.z_balonikiem {width:200px; height:30px; text-align:left; padding:10px;
+               font:bold 12px Tahoma; color:#678CB1; border:2px solid #678CB1; 
+			   line-height:30px; background:#9DB2C9; position:relative;}
+</style>
+
+
+<p>
+		<input type="button" id="go" value="Animuj" />
+		<div id="block">DIV</div>		
+</p>
+
+<script>
+
+//--- animate(animowane_wlasciwosci, czas, rodzaj_animacji, funkcja_zwrotna).---------- 
+
+/*S¹ jednak przypadki, ¿e chcielibyœmy stworzyæ w³asn¹ animacjê.
+Mo¿emy to zrobiæ za pomoc¹ metody animate(animowane_wlasciwosci, czas, r
+odzaj_animacji, funkcja_zwrotna). Najbardziej interesuj¹cymi nas parametrami
+ s¹ "animowane_wlasciwosci", w których podajemy atrybuty css, oraz czas w którym
+ wykona siê animacja:*/
+$(document).ready(function() {
+	$("#go").click(function(){
+		$("#block").animate({ 
+			width: "+=300px",
+			opacity: 0.6,
+			marginLeft: "0.6in",
+			fontSize: "1em", 
+			borderWidth: "12px"
+		}, 3500 );
+	});
+})
+	</script>
+
+	
+<p id="nty">Kliknij tutaj</p>	
+	
+	
+<script>
+/*Parametr funkcja_zwrotna jak w przypadku pozosta³ych efektów wywo³uje
+ funkcjê, która wykona siê po zakoñczeniu animacji.
+Parametr rodzaj_animacji okreœla przebieg animacji. jQuery posiada
+ wbudowane dwa rodzaje przebiegu animacji: "linear" i "swing". Aby skorzystaæ 
+ z innych rodzajów, powinniœmy skorzystaæ z dodatkowych pluginów do jQuery, 
+ np. tego: http://gsgd.co.uk/sandbox/jquery/easing/.*/
+$(document).ready(function() {
+$("p#nty").click(function() {
+    $(this).animate({
+        height:200,
+        width:400,
+        opacity: 0.5
+        }, 1000, 'swing', function(){ alert("koniec animacji");
+    });
+});
+ })
+ 
+ </script>
+ 
+ 
+ 
+ 
+ 
+ <script>
+ //stop -Stops all the currently running animations on all the specified elements. 
+ //If any animations are queued to run, then they will begin immediately.
+ $(document).ready(function() {
+		$("#balonik_stop")
+			.mouseover(function() {
+				$(this).stop().animate({width:300}, 500);
+			})
+			.mouseout(function() {
+				$(this).stop().animate({width:200}, 500);
+			});
+	})
+	</script>
+	<p>
+		<div id="balonik_stop" class="z_balonikiem">
+			NajedŸ na mnie
+		</div>
+	</p>
+	

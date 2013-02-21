@@ -1,0 +1,231 @@
+﻿<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<style>
+
+
+	body {
+		padding: 10px;
+	}
+	.plansza {
+		position: relative;
+		background: #fff;
+		overflow: hidden;
+		width: 440px;
+		height: 355px;
+		box-shadow: 1px 1px 1px #fff, inset 1px 1px 6px rgba(0, 0, 0, 0.2);
+		border-radius: 6px;
+	}
+
+	.kafelek {
+		position: absolute;
+		float: left;
+		width: 80px;
+		height: 80px;
+		background: #f6da17 url(title.png) center center no-repeat;/*Jedyną rzeczą która warta jest uwagi to centrowane przezroczyste tło kafelka, które jest obrazkiem znaku zapytania: */
+		margin: 5px;
+		border-radius: 5px;
+		box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2), inset 1px 1px 1px #fff, 1px 1px 3px rgba(0,0,0,1);
+	}
+</style>
+
+
+<body>
+
+	<div class="plansza">
+
+	</div>
+    <div class="moves"></div>
+
+<button class="start_game">Rozpocznij Grę</button>
+</body>
+
+<script>
+	const LICZBA_KAFELKOW = 20;
+	const KAFELKI_NA_RZAD = 5;
+	var kafelki = [];/*W tablicy kafelki będziemy przechowywać "typ" poszczególnych kafelków. 
+	Typy te będą występowały parami i będą okreslać po prostu numer obrazka dla danego kafelka. */
+
+	var pobraneKafelki = [];
+	var moznaBrac = true;
+	var liczbaRuchow = 0;
+	var paryKafelkow = 0;
+	
+	/*Ostatnia zmienna obrazkiKafelkow definiuje obrazki, które będą się
+	pojawiały na kafelkach po kliknięciu na nie. Każda para kafelków będzie
+	posiadała inny obrazek, który określimy na podstawie tablicy kafelki :) */
+	var obrazkiKafelkow = [
+		'title_1.png',
+		'title_2.png',
+		'title_3.png',
+		'title_4.png',
+		'title_5.png',
+		'title_6.png',
+		'title_7.png',
+		'title_8.png',
+		'title_9.png',
+		'title_10.png'
+	];
+	
+	function startGame() {
+	/*Pierwszym zadaniem jaki musi zrobić nasza startująca funkcja to czyszczenie wszystkich
+	zmiennych (nasza gra może rozpoczynać się kilka razy) i stworzenie pomieszanej tablicy par
+	numerów dla kafelków: */
+        kafelki = [];
+        pobraneKafelki = [];
+        moznaBrac = true;
+        liczbaRuchow = 0;
+        paryKafelkow = 0;
+
+		var plansza = $('.plansza').empty();
+
+		//umieszczam pary, ktore beda zgadywane
+		//0,0 1,1 2,2 
+		for (var i=0; i<LICZBA_KAFELKOW; i++) {
+		console.log(Math.floor(i/2) );
+			kafelki.push(Math.floor(i/2));
+		}
+
+		//nie Musza zosatć wymieszane wszytkie -> rand gwarantuje ze zostanie wymieszane chociaz kilka
+		//ta pentla losuje pary, aby nie byly jedna po drugiej[0,0,1,1,2,2,3,3...]
+		for (i=LICZBA_KAFELKOW-1; i>0; i--) {
+		
+			var swap = Math.floor(Math.random()*i);
+			console.log("swap : " + swap);
+			var tmp = kafelki[i];
+			kafelki[i] = kafelki[swap];
+			kafelki[swap] = tmp;
+			console.log(tmp);
+		}
+		
+		for(i=LICZBA_KAFELKOW-1; i>0; i--){
+		console.log("kafelek " + i +" -> wartosc: " + kafelki[i]);
+		}
+		
+//Po stworzeniu tablicy z numerami kafelków, możemy na jej podstawie wstawić kafelki na planszę: 
+		for (i=0; i<LICZBA_KAFELKOW; i++) {
+			var tile = $('<div class="kafelek"></div>');
+			plansza.append(tile);
+			//Po kliknięciu na dany kafelek będziemy pobierać numer który został jemu przypisany. 
+			//Numer taki musimy więc gdzieś przechować. Idealnie do tego celu nadaje się metoda jQuery .data().
+//			Służy ona właśnie do podpinania elementom html dodatkowych informacji
+
+			tile.data('cardType',kafelki[i]);//cardType- daje tam wartosc od 0do9(nr pary)
+			console.log("cardType : " + kafelki[i]);
+			
+			tile.data('index', i);//index od 0 do 19
+			console.log("index : " + i);
+			
+			//Nasze kafelki pozycjonujemy absolutnie wykorzystując do tego prostą pętlę.
+			//5, 90, 175, 260, 345
+			console.log("left : " + ( 5+(tile.width()+5)*(i%KAFELKI_NA_RZAD) ) );
+			console.log("i%KAFELKI_NA_RZAD" + (i%KAFELKI_NA_RZAD));
+			//pozycjonuje title(css .kafelek)
+			tile.css({
+			left : 5+(tile.width()+5)*(i%KAFELKI_NA_RZAD) 
+			});
+			console.log("top : " + ( 5+(tile.height()+5)*(Math.floor(i/KAFELKI_NA_RZAD)) ) );
+			console.log("i/KAFELKI_NA_RZAD " + (i/KAFELKI_NA_RZAD) );
+			//KAFELKI_NA_RZAD = 5
+			//5, 90, 175, 260
+			tile.css({
+			top : 5+(tile.height()+5)*(Math.floor(i/KAFELKI_NA_RZAD)) 
+			});
+			//tile.gotoAndStop(LICZBA_KAFELKOW / 2 + 1);
+			//tile.buttonMode = true;
+			
+			//pod dany .kafelek podpinam onclick
+			tile.bind('click', function() {
+				klikniecieKafelka($(this))
+			});
+		}
+		$('.moves').html(liczbaRuchow)
+	}
+
+	function klikniecieKafelka(element) {
+	
+	/*W postaci takiej jak powyższa nasz skrypt nie będzie działał prawidłowo.
+	Wyobraź sobie sytuację: gracz wybiera 2 kafelki, zostaje odpalona z opuźnieniem funkcja usunKafelki
+	lub zresetujKafelki. Jednak w tym samym czasie gracz może spokojnie klikać resztę kafelków i nasze 
+	działania zostają zakłócone.
+Aby to naprawić dodamy do naszego skryptu dodatkową zmienną moznaBrac.*/
+		if (moznaBrac) {
+		
+		/*Na samym początku sprawdzamy, czy dany kafelek nie jest już 
+		wcześniej kliknięty (czyli czy nie jest wrzucony do tablicy pobraneKafelki).
+		Jeżeli nie jest, a index klikniętego elementu nie występuje już w tablicy 
+		(nasza tablica będzie maksymalnie 2 elementowa, więc wystarczy sprawdzić jej 1 element), 
+		wtedy możemy go do niej dodać (zapobiegnie to sytuacji, gdy 2x klikniemy ten sam element).
+        Dodatkowo przy dodawaniu elementu do tablicy ustawiamy mu odpowiednie tło, którego numer 
+        pobieramy z "data" danego kafelka.*/
+			if (!pobraneKafelki[0] || (pobraneKafelki[0].data('index') != element.data('index'))) {
+				pobraneKafelki.push(element);
+				element.css({'background-image' : 'url('+obrazkiKafelkow[element.data('cardType')]+')'})	
+			}
+			
+			
+			/*Nastepuje wybranie 2 kafelka (if (pobraneKafelki.length==2). 
+			Jeżeli "cardType" obydwu elementów tablicy pobraneKafelki jest taki sam, 
+			znaczy to, że para kafelków została dopasowana. Odpalamy więc funkcję usunKafelki().
+			Jeżeli "data" jest różna, znaczy to że kafelki są różne, więc musimy je ukryć na nowo.
+			Służy do tego metoda zresetujKafelki.
+Obie metody odpalamy z opuźnieniem 500ms, tak by wybrane kafelki nie ukrywały się od razu :) */
+			if (pobraneKafelki.length == 2) {
+				moznaBrac = false;
+				if (pobraneKafelki[0].data('cardType')==pobraneKafelki[1].data('cardType')) {
+					setTimeout('usunKafelki()', 500);
+				} else {
+					setTimeout('zresetujKafelki()', 500);
+				}
+				liczbaRuchow++;
+
+				$('.moves').html(liczbaRuchow)
+			}
+		}
+	}
+/*Ostatnie funckje jakie zostały nam do napisania do usunKafelki() i zresetujKafelki().
+Jak widać powyżej, jeżeli oba pobrane kafelki mają taki sam "cartType", wtedy odpalamy funkcję usunKafelki.
+Kafelki do usunięcia znajdują się teraz w tablicy pobraneKafelki. Wystarczy je więc usunąć,
+ po czym na nowo ustawić tablicę pobraneKafelki. Oczywiście po usunięciu kafelków włączamy na 
+ nowo możliwość pobrania nowej pary: */
+	function usunKafelki() {
+		pobraneKafelki[0].fadeOut(function() {
+		/*Czemu resetowanie zmiennych i usuwanie obiektów robimy wewnątrz fadeOut()? 
+		Ponieważ chcemy te działania przeprowadzić dopiero PO zakończeniu animacji fadeOut.
+		A jak wiemy z jQApi, wystarczy wewnątrz deklaracji fadeOut podać funckję, by ta została
+		odpalona po zakończeniu animacji zanikania :) */
+			$(this).remove();
+		});
+		pobraneKafelki[1].fadeOut(function() {
+			$(this).remove();
+
+            paryKafelkow++; //zgadnietych
+			/*Pozostało nam do wykonania sprawdznie czy użytkownik nie odkrył
+			wszystkich kafelków i tym samym nie zakończył gry.
+			Wysatrczy wprowadzić dodatkową zmienną, w której będziemy przechowywać
+			liczbę odkrytych par. Jeżeli liczba ta będzie >= połowie wszystkich kafelków
+			znaczy to, że gra została zakończona :)
+Oczywiście sprawdzenie takie wykonujemy tylko przy usunięciu kafelków z planszy: */
+            if (paryKafelkow >= LICZBA_KAFELKOW / 2) {
+                alert('gameOver!');
+            }
+            moznaBrac = true;
+			//robie miejsce dla dwoch nowych .kafelki
+            pobraneKafelki = new Array();
+		});
+	}
+
+	/*Funckja resetująca kafelki do stanu zakrytego jest jeszcze prostsza. Oba kafelki wracają
+	po prostu do statu początkowego, po czym tak samo jak powyżej ustawiamy na nowo talicę pobraneKafelki 
+	i zmienną moznaBrac. */
+	function zresetujKafelki() {
+		pobraneKafelki[0].css({'background-image':'url(title.png)'})
+		pobraneKafelki[1].css({'background-image':'url(title.png)'})
+		pobraneKafelki = new Array();
+		moznaBrac = true;
+	}
+	
+	$(document).ready(function() {
+
+		$('.start_game').click(function() {startGame();});
+
+	})
+</script>

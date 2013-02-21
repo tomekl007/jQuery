@@ -1,0 +1,162 @@
+/*Zauwa¿ ¿e wykorzystaliœmy niestandardowy krój pisma.
+Aby móc zaembedowaæ na stronê w³asn¹ czcionê musimy j¹ odpowiednio przygotowaæ.
+Wchodzimy wiêc na stronê ---http://www.fontsquirrel.com/fontface/generator ----
+i korzystamy z generatora.
+Ustawiamy opcje: Protection:WebOnly, Custom Subsetting... Polish, CSS Formats:
+ Smiley oraz akceptujemy warunki. Na górze formularza klikamy na czarny przycisk Add Fonts i
+ wybieramy z naszego dysku czcionkê która nas interesuje (w naszym przyk³adzie "kreska"). 
+ Czekamy chwilê (czasami mo¿e siê zdarzyæ ¿e bêdzie bardzo d³uga chwila) i dostajemy w wyniku 
+ archiwum zawieraj¹ce wszystkie niezbêdne pliki. Jeden z nich jest plikiem CSS zawieraj¹cym opis 
+ naszej czcionki, który wrzucamy do naszych stylów*/
+
+    @font-face {
+		font-family:'kreska-webfont';
+		src:url('../../test/font/kreska-webfont.eot');
+		src:local('¢'),
+			url('../../test/font/kreska-webfont.woff') format('woff'),
+			url('../../test/font/kreska-webfont.ttf') format('truetype'),
+			url('font/kreska-webfont.svg#webfontl3eKyN4a') format('svg');
+		font-weight:normal;
+		font-style:normal;
+	}
+/* -------------------------------------------------- */
+    body {
+        background:#eee;
+    }
+
+    .page_container {
+        max-width:1600px;
+        min-width:1000px;
+    }
+/* Nasze stylowanie zaczynamy od planszy:  */
+    .plansza {
+        width:80%;
+        height:300px;
+        background:#fff;
+        box-shadow:inset 0 0 10px rgba(0,0,0,0.2);
+        border:1px solid #fff;
+        margin:20px auto;
+        position:relative;
+    }
+/* Po ostylowaniu planszy pozosta³o nam dostosowanie wygl¹du listy z guzikami liter:  */
+    .literki {
+        list-style-type:none;
+        margin:10px auto;
+        padding:0;
+        width:1200px;
+        text-align:center;
+    }
+
+    .literki li, .literki li.disabled, .literki li.disabled:hover, .literki li.clicked, .literki li.clicked:hover {
+        display:inline-block;
+        width: 50px;
+        height: 50px;
+        margin:5px;
+        cursor:pointer;
+        text-transform:uppercase;
+        text-shadow:-1px -1px 0 #fff;
+        font:14px kreska-webfont;
+        color:#444;
+        text-align:center;
+        line-height:53px;
+
+        -moz-border-radius: 6px;
+        -webkit-border-radius: 6px;
+        border-radius: 6px;
+
+        -moz-box-shadow:inset 0 0 6px rgba(0,0,0,0.3), inset 0 13px 0 rgba(255,255,255,0.4), 1px 1px 1px rgba(255,255,255,0.8), inset 1px 1px 1px rgba(0,0,0,0.6);
+        -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3), inset 0 13px 0 rgba(255,255,255,0.4), 1px 1px 1px rgba(255,255,255,0.8), inset 1px 1px 1px rgba(0,0,0,0.6);
+        box-shadow:inset 0 0 6px rgba(0,0,0,0.3), inset 0 13px 0 rgba(255,255,255,0.4), 1px 1px 1px rgba(255,255,255,0.8), inset 1px 1px 1px rgba(0,0,0,0.6);
+
+        /* tlo przycisku */
+        background-color: #eeeeee;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#dddddd)); /* Saf4+, Chrome */
+        background-image: -webkit-linear-gradient(top, #eeeeee, #dddddd); /* Chrome 10+, Saf5.1+ */
+        background-image:    -moz-linear-gradient(top, #eeeeee, #dddddd); /* FF3.6 */
+        background-image:     -ms-linear-gradient(top, #eeeeee, #dddddd); /* IE10 */
+        background-image:      -o-linear-gradient(top, #eeeeee, #dddddd); /* Opera 11.10+ */
+        background-image:         linear-gradient(top, #eeeeee, #dddddd);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='#dddddd'); /* IE6–IE9 */
+    }
+
+    .literki li.disabled,.literki li.disabled:hover {
+        background: #eeeeee;
+        box-shadow:inset 0 0 6px rgba(0,0,0,0.1), inset 0 13px 0 rgba(255,255,255,0.1), 1px 1px 1px rgba(255,255,255,0.8), inset 1px 1px 1px rgba(0,0,0,0.2);
+        color:#ddd;
+        text-shadow:none;
+        cursor:default;
+    }
+
+    .literki li:hover {
+        background-color: #faf700;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#faf700), to(#fabc00)); /* Saf4+, Chrome */
+        background-image: -webkit-linear-gradient(top, #faf700, #fabc00); /* Chrome 10+, Saf5.1+ */
+        background-image:    -moz-linear-gradient(top, #faf700, #fabc00); /* FF3.6 */
+        background-image:     -ms-linear-gradient(top, #faf700, #fabc00); /* IE10 */
+        background-image:      -o-linear-gradient(top, #faf700, #fabc00); /* Opera 11.10+ */
+        background-image:         linear-gradient(top, #faf700, #fabc00);
+        text-shadow:0 0 1px #fff, 0 0 3px #faf700;
+        font-size:14px;
+        line-height:53px;
+        color:#fff;
+    }
+	/*W naszym stylowaniu musimy uwzglêdniæ zarówno stan normalny, stan po najechaniu jak i 
+	stan kiedy guzik jest wy³¹czony (disabled).
+Wszystkich w³aœciwoœci CSS3 nie ma sensu wkuwaæ na pamiêæ. By³o by to zbytecznym marnowaniem 
+pamiêci naszego muzgu. O wiele lepiej wejœæ po prostu na stronê http://css3please.com/ i skopiowaæ 
+to co potrzebujemy :) */
+	
+	
+	
+/* Najwa¿niejsza w³aœciwoœæ z powy¿szych to relatywne pozycjnowanie, 
+dziêki któremu bêdziemy mogli bez problemu ustawiæ elementy na planszy.
+...Co w³aœnie zrobimy :) Zaczynamy od has³a:  */
+    .haslo {
+        position:absolute;
+        padding:0;
+        margin:0;
+        bottom:10px;
+        left:0;
+        width:100%;
+        text-align:center;
+    }
+
+    .haslo li {
+        text-transform: uppercase;
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        background: #fefefe;
+        border: 1px solid #ddd;
+        overflow: hidden;
+        margin: 5px;
+        box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.2);
+        font: 30px kreska-webfont;
+        color: #333;
+        text-align: center;
+        line-height: 50px;
+    }
+
+    .haslo li.space {
+        border: 0;
+        background: none;
+        box-shadow: none;
+    }
+	/*Nasza lista z has³em do odgadniêcia to zwyk³a ostylowana lista, 
+	w której poszczególne pozycje s¹ ustawione obok siebie oraz centrowane do œrodka. 
+	Uzyskujemy to poprzez nadanie text-align:center dla listy oraz display:inline-block dla LI.
+	Oczywiœcie LI w których ma byæ odstêp (spacja) powinny byæ "pustym" miejscem, czyli dla LI.space 
+	usuwamy background itp. */
+	
+	/*Ostatnim elementem planszy s¹ wyœwietlane próby. Tutaj niestety nic nas nie zaskoczy: */
+/* licznik prob na planszy */
+    .proby {
+        position: absolute;
+       /* top: 10px;*/
+        left: 10px;
+        width: 40px;
+        height: 40px;
+        font: 30px kreska-webfont;
+        color: #333;
+        text-align: center;
+    }
